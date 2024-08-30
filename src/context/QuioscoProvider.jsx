@@ -14,7 +14,7 @@ const QuioscoProvider = ({children}) => {
     const [total, setTotal] = useState([0])
 
     useEffect(() =>{
-        const nuevoTotal = pedido.reduce( (total, producto) => (producto.precio * producto.cantidad) * total, 0 )
+        const nuevoTotal = pedido.reduce( (total, producto) => (producto.precio * producto.cantidad) + total, 0 )
 
         setTotal(nuevoTotal)
         

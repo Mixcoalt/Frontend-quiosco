@@ -1,7 +1,43 @@
 //import { Outlet } from 'react-router-dom'
+import {createRef, useState} from 'react'
 import { Link } from 'react-router-dom'
+import clienteAxios from '../config/axios'
+import Alerta from '../components/Alerta';
+import { useAuth } from '../hooks/useAuth';
 
 const Registro = () => {
+
+    const nameRef = createRef();
+    const emailRef = createRef();
+    const passwordRef = createRef();
+    const passwordConfirmatedRef = createRef();
+    const directionRef = createRef();
+    const phoneRef = createRef();
+
+    const [errores, setErrores] = useState([])
+
+    const { registro } = useAuth({middleware: 'guest', url: '/'})
+
+    const handleSubmit = async e => {
+        e.preventDefault()
+
+        const datos = {
+            name: nameRef.current.value,
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+            password_confirmation: passwordConfirmatedRef.current.value,
+            direction: directionRef.current.value,
+            phone: phoneRef.current.value
+        }
+
+        console.log(datos)
+
+       registro(datos, setErrores)
+
+        
+    }
+
+
     return (
     <>
       <h1 className='text-4xl font-black'>
@@ -15,7 +51,15 @@ const Registro = () => {
         <div className='bg-white shadow-md rounded-md
         mt-10 px-5 py-10'> 
 
-        <form action="">
+        <form action=""
+        
+            onSubmit={handleSubmit}
+            noValidate
+
+        >
+
+        {errores ? errores.map((error, i) => <Alerta key={i}>{error}</Alerta>)  : null }
+
             <div className='mb-4'>
                 <label 
                     htmlFor="name"
@@ -30,6 +74,7 @@ const Registro = () => {
                     w-full'
                     name='name'
                     placeholder='Tu nombre'
+                    ref={nameRef}
                 />
             </div>
 
@@ -47,6 +92,7 @@ const Registro = () => {
                     w-full'
                     name='email'
                     placeholder='Correo Electronico'
+                    ref={emailRef}
                 />
             </div>
 
@@ -64,6 +110,7 @@ const Registro = () => {
                     w-full'
                     name='name'
                     placeholder='Tu Contraeña'
+                    ref={passwordRef}
                 />
             </div>
 
@@ -75,46 +122,49 @@ const Registro = () => {
                     Repite tu Password
                 </label>
                 <input 
-                    type="password_confirmation" 
-                    id='password'
+                    type="password" 
+                    id='password_confirmation'
                     className='mt-2 p-3 bg-gray-50
                     w-full'
-                    name='password'
+                    name='password_confirmation'
                     placeholder='Repite tu Password'
+                    ref={passwordConfirmatedRef}
                 />
             </div>
 
             <div className='mb-4'>
                 <label 
-                    htmlFor="direcion"
+                    htmlFor="direction"
                     className='text-slate-800'
                 >
                     Direccion
                 </label>
                 <input 
                     type="text" 
-                    id='direcion'
+                    id='direction'
                     className='mt-2 p-3 bg-gray-50
                     w-full'
-                    name='direcion'
+                    name='direction'
                     placeholder='Tu direccion'
+                    ref={directionRef}
                 />
             </div>
 
             <div className='mb-4'>
                 <label 
-                    htmlFor="telefono"
+                    htmlFor="phone"
                     className='text-slate-800'
                 >
                     Telefono
                 </label>
                 <input 
                     type="tel" 
-                    id='telefono'
+                    id='phone'
                     className='mt-2 p-3 bg-gray-50
                     w-full'
-                    name='telefono'
+                    name='phone'
                     placeholder='0123456789'
+                    ref={phoneRef}
                 />
             </div>
 

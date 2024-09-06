@@ -4,7 +4,15 @@ import ResumenProducto from "./ResumenProducto";
 
 const Resumen = () => {
 
-    const { pedido, total } = useQuiosco()
+  
+
+    const { pedido, total, handleSubmitNuevaOrden } = useQuiosco()
+
+    const handleSubmit = e =>{
+        e.preventDefault()
+
+        handleSubmitNuevaOrden()
+    }
 
     const comprobarPedido = () => pedido.length === 0
 
@@ -37,7 +45,9 @@ const Resumen = () => {
             {formatearDinero(total)}
         </p>
 
-            <form action="" className="w-full">
+            <form action="" className="w-full"
+                onSubmit={handleSubmit}
+            >
                 <div className="mt-5">
                     <input type="submit" 
                         className={`${comprobarPedido() ? 'bg-indigo-100' : 'bg-indigo-600 hover:bg-indigo-800'}  

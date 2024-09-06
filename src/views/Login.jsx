@@ -1,6 +1,34 @@
+import {createRef, useState} from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth';
+import Alerta from '../components/Alerta';
 
 const Login = () => {
+
+    const emailRef = createRef();
+    const passwordRef = createRef();
+  
+
+    const [errores, setErrores] = useState([])
+
+    const { login }  = useAuth({
+        middleware: 'guest',
+        url: '/'
+    })
+
+    const handleSubmit = async e => {
+        e.preventDefault()
+
+        const datos = {
+            email: emailRef.current.value,
+            password: passwordRef.current.value
+        }
+
+        //console.log(datos)
+        login(datos, setErrores)
+      
+    }
+
     return (
         <>
         <h1 className='text-4xl font-black'>
@@ -14,7 +42,11 @@ const Login = () => {
           <div className='bg-white shadow-md rounded-md
           mt-10 px-5 py-10'> 
   
-          <form action="">
+          <form action=""
+            onSubmit={handleSubmit}
+            noValidate
+          >
+             {errores ? errores.map((error, i) => <Alerta key={i}>{error}</Alerta>)  : null }
   
               <div className='mb-4'>
                   <label 
@@ -30,6 +62,7 @@ const Login = () => {
                       w-full'
                       name='email'
                       placeholder='Correo Electronico'
+                      ref={emailRef}
                   />
               </div>
   
@@ -45,8 +78,9 @@ const Login = () => {
                       id='password'
                       className='mt-2 p-3 bg-gray-50
                       w-full'
-                      name='name'
+                      name='password'
                       placeholder='Tu Contraeña'
+                      ref={passwordRef}
                   />
               </div>
 
